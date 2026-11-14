@@ -580,6 +580,54 @@
         height: 240px;
       }
     }
+  
+    /* ---------------- LIVE REAL-TIME CARD STYLES ---------------- */
+    .live-realtime-card {
+      background: #ffffff;
+      border: 1px solid #c9d5cc;
+      border-left: 4px solid var(--accent-nvgreen);
+      border-radius: 4px;
+      padding: 16px 20px;
+      margin-top: 20px;
+      margin-bottom: 8px;
+      box-shadow: 0 2px 8px rgba(45, 106, 79, 0.06);
+    }
+    .live-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 4px;
+    }
+    .live-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.92rem;
+      color: var(--ink-primary);
+    }
+    .live-indicator {
+      width: 10px;
+      height: 10px;
+      background-color: #22c55e;
+      border-radius: 50%;
+      display: inline-block;
+      box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+      animation: pulse-live 1.8s infinite;
+    }
+    @keyframes pulse-live {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+    }
+    .live-note {
+      font-size: 0.78rem;
+      color: var(--ink-muted);
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+
   </style>
 </head>
 <body>
@@ -635,6 +683,35 @@
         추정 시가총액: <strong>약 3조 9,800억 달러</strong> (원화 약 5,600조 원 이상)
       </div>
     </div>
+
+    <!-- LIVE REAL-TIME STREAMING WIDGET (가장 쉬운 실시간 연동) -->
+    <div class="live-realtime-card no-print">
+      <div class="live-header">
+        <div class="live-title">
+          <span class="live-indicator"></span>
+          <strong>NASDAQ 정규장 / 프리마켓 실시간 체결가</strong>
+        </div>
+        <span class="badge badge-fact" style="background:#2d6a4f; color:#ffffff;">실시간 자동 갱신 중 (Live)</span>
+      </div>
+      <!-- TradingView Symbol Info Widget BEGIN -->
+      <div class="tradingview-widget-container" style="border-radius: 4px; overflow: hidden; margin-top: 8px;">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-info.js" async>
+        {
+          "symbol": "NASDAQ:NVDA",
+          "width": "100%",
+          "locale": "kr",
+          "colorTheme": "light",
+          "isTransparent": true
+        }
+        </script>
+      </div>
+      <!-- TradingView Widget END -->
+      <div class="live-note">
+        ⚡ <em>별도의 회원가입이나 복잡한 API 키 발급 없이</em>, 거래소 공식 체결망과 연동되어 장중 현재가, 호가, 당일 변동률이 1초 단위로 자동 갱신됩니다.
+      </div>
+    </div>
+
 
     <!-- 3 Pillars -->
     <div class="editorial-grid-3">
