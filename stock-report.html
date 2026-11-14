@@ -702,31 +702,56 @@
     </div>
 
     <!-- LIVE REAL-TIME STREAMING WIDGET (가장 쉬운 실시간 연동) -->
+    
+    <!-- LIVE REAL-TIME STREAMING & DUAL SEARCH COMPONENT -->
     <div class="live-realtime-card no-print">
       <div class="live-header">
         <div class="live-title">
           <span class="live-indicator"></span>
-          <strong>NASDAQ 정규장 / 프리마켓 실시간 체결가</strong>
+          <strong>실시간 주가 조회 & 종목 검색 (해외 / 국내)</strong>
         </div>
-        <span class="badge badge-fact" style="background:#2d6a4f; color:#ffffff;">실시간 자동 갱신 중 (Live)</span>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="badge badge-fact" id="liveStatusBadge" style="background:#2d6a4f; color:#ffffff;">실시간 스트리밍 중</span>
+          <button class="btn-refresh" onclick="refreshCurrentTicker()" title="시세 즉시 새로고침">🔄 실시간 업데이트</button>
+        </div>
       </div>
-      <!-- TradingView Symbol Info Widget BEGIN -->
-      <div class="tradingview-widget-container" style="border-radius: 4px; overflow: hidden; margin-top: 8px;">
+
+      <!-- Market Mode Switcher (해외종목 / 국내종목) -->
+      <div class="market-switcher-row">
+        <div class="market-toggle-group">
+          <button class="market-tab active" id="tabGlobal" onclick="setMarketMode('global')">🌐 해외종목 (미국/나스닥)</button>
+          <button class="market-tab" id="tabDomestic" onclick="setMarketMode('domestic')">🇰🇷 국내종목 (코스피/코스닥)</button>
+        </div>
+        <div class="quick-chips" id="quickChips">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Search Input Bar -->
+      <div class="search-bar-row">
+        <div class="search-input-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="stockSearchInput" class="search-input" placeholder="티커 또는 종목명 입력 (예: NVDA, TSLA, AAPL)..." onkeydown="if(event.key==='Enter') executeSearch()">
+        </div>
+        <button class="search-btn" onclick="executeSearch()">검색 / 적용</button>
+      </div>
+
+      <!-- Active Ticker Label -->
+      <div class="current-symbol-bar">
+        <span>현재 조회 종목: <strong id="currentSymbolText" style="color:var(--accent-nvgreen);">NASDAQ:NVDA (엔비디아)</strong></span>
+        <span id="lastUpdateTime" style="font-size:0.75rem; color:var(--ink-muted);">체결 틱 실시간 수신 대기 중</span>
+      </div>
+
+      <!-- Dynamic TradingView Symbol Info Container -->
+      <div class="tradingview-widget-container" id="tvWidgetContainer" style="border-radius: 4px; overflow: hidden; margin-top: 10px; min-height: 140px;">
         <div class="tradingview-widget-container__widget"></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-info.js" async>
-        {
-          "symbol": "NASDAQ:NVDA",
-          "width": "100%",
-          "locale": "kr",
-          "colorTheme": "light",
-          "isTransparent": true
-        }
-        </script>
       </div>
-      <!-- TradingView Widget END -->
+
       <div class="live-note">
-        ⚡ <em>별도의 회원가입이나 복잡한 API 키 발급 없이</em>, 거래소 공식 체결망과 연동되어 장중 현재가, 호가, 당일 변동률이 1초 단위로 자동 갱신됩니다.
+        ⚡ <strong>안내</strong>: 상단 <strong>[🔄 실시간 업데이트]</strong> 버튼을 누르면 즉시 최신 호가창을 다시 읽어오며, 해외는 <code>티커(예: NVDA, AAPL, MSFT)</code>, 국내는 <code>종목코드 6자리(예: 005930, 000660)</code> 또는 한글 이름으로 자유롭게 검색할 수 있습니다.
       </div>
+    </div>
+
     </div>
 
 
@@ -1154,6 +1179,182 @@
       window.print();
     }, 150);
   }
+</script>
+
+
+<script>
+  // Market Quick Presets
+  const marketPresets = {
+    global: [
+      { name: "엔비디아 (NVDA)", symbol: "NASDAQ:NVDA" },
+      { name: "테슬라 (TSLA)", symbol: "NASDAQ:TSLA" },
+      { name: "애플 (AAPL)", symbol: "NASDAQ:AAPL" },
+      { name: "마이크로소프트 (MSFT)", symbol: "NASDAQ:MSFT" },
+      { name: "알파벳/구글 (GOOGL)", symbol: "NASDAQ:GOOGL" },
+      { name: "TSMC (TSM)", symbol: "NYSE:TSM" }
+    ],
+    domestic: [
+      { name: "삼성전자 (005930)", symbol: "KRX:005930" },
+      { name: "SK하이닉스 (000660)", symbol: "KRX:000660" },
+      { name: "현대차 (005380)", symbol: "KRX:005380" },
+      { name: "LG에너지솔루션 (373220)", symbol: "KRX:373220" },
+      { name: "NAVER (035420)", symbol: "KRX:035420" },
+      { name: "카카오 (035720)", symbol: "KRX:035720" }
+    ]
+  };
+
+  // Domestic Stock Name Mapping Dictionary
+  const domesticNameMap = {
+    "삼성전자": "KRX:005930",
+    "삼성": "KRX:005930",
+    "삼전": "KRX:005930",
+    "sk하이닉스": "KRX:000660",
+    "하이닉스": "KRX:000660",
+    "현대차": "KRX:005380",
+    "현대자동차": "KRX:005380",
+    "lg에너지솔루션": "KRX:373220",
+    "엔솔": "KRX:373220",
+    "네이버": "KRX:035420",
+    "naver": "KRX:035420",
+    "카카오": "KRX:035720",
+    "삼성바이오로직스": "KRX:207940",
+    "삼바": "KRX:207940",
+    "기아": "KRX:000270",
+    "셀트리온": "KRX:068270",
+    "포스코홀딩스": "KRX:005490",
+    "posco": "KRX:005490",
+    "크래프톤": "KRX:259960",
+    "에코프로비엠": "KRX:247540",
+    "에코프로": "KRX:086520"
+  };
+
+  let currentMarketMode = 'global';
+  let activeSymbol = 'NASDAQ:NVDA';
+  let activeDisplayName = 'NASDAQ:NVDA (엔비디아)';
+
+  // Switch Market Mode (해외종목 / 국내종목)
+  function setMarketMode(mode) {
+    currentMarketMode = mode;
+    const tabGlobal = document.getElementById('tabGlobal');
+    const tabDomestic = document.getElementById('tabDomestic');
+    const searchInput = document.getElementById('stockSearchInput');
+
+    if (mode === 'global') {
+      tabGlobal.classList.add('active');
+      tabDomestic.classList.remove('active');
+      searchInput.placeholder = "해외 티커 입력 (예: NVDA, TSLA, AAPL, MSFT, AMZN)...";
+    } else {
+      tabDomestic.classList.add('active');
+      tabGlobal.classList.remove('active');
+      searchInput.placeholder = "국내 종목명 또는 6자리 코드 (예: 삼성전자, SK하이닉스, 005930)...";
+    }
+    renderQuickChips();
+  }
+
+  // Render Quick Selection Chips
+  function renderQuickChips() {
+    const chipsContainer = document.getElementById('quickChips');
+    chipsContainer.innerHTML = '';
+    const presets = marketPresets[currentMarketMode];
+    presets.forEach(item => {
+      const btn = document.createElement('button');
+      btn.className = 'chip-btn';
+      btn.textContent = item.name.split(' ')[0];
+      btn.onclick = () => loadTradingViewSymbol(item.symbol, item.name);
+      chipsContainer.appendChild(btn);
+    });
+  }
+
+  // Re-inject TradingView Widget Script Dynamically
+  function loadTradingViewSymbol(symbolCode, displayName) {
+    activeSymbol = symbolCode;
+    activeDisplayName = displayName || symbolCode;
+
+    const labelElem = document.getElementById('currentSymbolText');
+    const timeElem = document.getElementById('lastUpdateTime');
+    if (labelElem) labelElem.textContent = activeDisplayName;
+    if (timeElem) timeElem.textContent = '방금 갱신됨: ' + new Date().toLocaleTimeString();
+
+    const container = document.getElementById('tvWidgetContainer');
+    if (!container) return;
+    
+    // Clear previous widget
+    container.innerHTML = '<div class="tradingview-widget-container__widget"></div>';
+
+    // Build configuration
+    const widgetConfig = {
+      "symbol": symbolCode,
+      "width": "100%",
+      "locale": "kr",
+      "colorTheme": "light",
+      "isTransparent": true
+    };
+
+    // Create & append new script
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.async = true;
+    script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-symbol-info.js';
+    script.text = JSON.stringify(widgetConfig);
+
+    container.appendChild(script);
+
+    // Visual feedback on refresh
+    const badge = document.getElementById('liveStatusBadge');
+    if (badge) {
+      badge.textContent = '새로고침 완료';
+      badge.style.background = '#1e3a8a';
+      setTimeout(() => {
+        badge.textContent = '실시간 스트리밍 중';
+        badge.style.background = '#2d6a4f';
+      }, 1200);
+    }
+  }
+
+  // Execute Search from Input Bar
+  function executeSearch() {
+    const input = document.getElementById('stockSearchInput');
+    const query = input.value.trim();
+    if (!query) return;
+
+    let targetSymbol = '';
+    let targetName = '';
+
+    if (currentMarketMode === 'domestic') {
+      const cleanKey = query.toLowerCase().replace(/\s+/g, '');
+      if (/^\d{6}$/.test(cleanKey)) {
+        targetSymbol = 'KRX:' + cleanKey;
+        targetName = '국내종목 (' + cleanKey + ')';
+      } else if (domesticNameMap[cleanKey]) {
+        targetSymbol = domesticNameMap[cleanKey];
+        targetName = query + ' (' + targetSymbol.replace('KRX:', '') + ')';
+      } else {
+        targetSymbol = 'KRX:' + query.toUpperCase();
+        targetName = 'KRX:' + query;
+      }
+    } else {
+      // Global stock
+      let cleanQuery = query.toUpperCase();
+      if (!cleanQuery.includes(':')) {
+        cleanQuery = 'NASDAQ:' + cleanQuery;
+      }
+      targetSymbol = cleanQuery;
+      targetName = targetSymbol;
+    }
+
+    loadTradingViewSymbol(targetSymbol, targetName);
+  }
+
+  // Refresh current ticker button handler
+  function refreshCurrentTicker() {
+    loadTradingViewSymbol(activeSymbol, activeDisplayName);
+  }
+
+  // Initialize on Load
+  document.addEventListener('DOMContentLoaded', function() {
+    setMarketMode('global');
+    loadTradingViewSymbol('NASDAQ:NVDA', 'NASDAQ:NVDA (엔비디아)');
+  });
 </script>
 
 </body>
