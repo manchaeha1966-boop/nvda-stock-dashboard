@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>THE TSLA DISPATCH • 테슬라 1개월 주식 에디토리얼 대시보드</title>
+  <title>THE NVDA DISPATCH • 엔비디아 1개월 주식 에디토리얼 대시보드</title>
   
   <!-- Google Fonts: Editorial Serif + Clean Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,24 +32,24 @@
 
   <style>
     /* -------------------------------------------------------------
-       MAGAZINE / EDITORIAL DESIGN SYSTEM (차분한 잡지 무드)
-       Palette: Warm Alabaster, Warm Charcoal, Cream, Terracotta & Sage
+       MAGAZINE / EDITORIAL DESIGN SYSTEM (엔비디아 에디토리얼 무드)
+       Palette: Warm Alabaster, Warm Charcoal, Cream, Deep Forest Green & Terracotta
        Typography: Newsreader (Serif) + Plus Jakarta Sans (Sans)
     -------------------------------------------------------------- */
     :root {
       --bg-canvas: #f8f6f0;           /* 따뜻한 미색(매거진 내지 질감) */
       --paper-white: #ffffff;         /* 순백 아티클 카드 */
       --paper-surface: #f2eee3;       /* 서브 섹션 배경 */
-      --ink-primary: #1f2022;         /* 짙은 차콜(완전한 검정보다 부드러움) */
+      --ink-primary: #1f2022;         /* 짙은 차콜 */
       --ink-secondary: #575a61;       /* 서브 텍스트 */
       --ink-muted: #8c8f96;           /* 날짜, 메타 텍스트 */
       --border-soft: #e2ddd0;         /* 얇고 정갈한 구분선 */
       --border-accent: #cfc8b8;       
       
+      --accent-nvgreen: #2d6a4f;      /* 에디토리얼 딥 그린 (엔비디아 상징) */
       --accent-rust: #b24130;         /* 에디토리얼 테라코타 (하락/포인트) */
-      --accent-sage: #2d6a4f;         /* 세이지 그린 (상승/팩트) */
       --accent-slate: #3b5266;        /* 슬레이트 네이비 (AI 해석) */
-      --accent-ochre: #b5832c;        /* 차분한 앰버/오커 (확인 필요) */
+      --accent-ochre: #b5832c;        /* 차분한 오커 (확인 필요) */
 
       --font-serif: 'Newsreader', 'Batang', Georgia, serif;
       --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Pretendard", sans-serif;
@@ -75,7 +75,61 @@
       margin: 0 auto;
     }
 
-    /* ---------------- MAGAZINE MASTHEAD ---------------- */
+    /* Floating Action Bar */
+    .action-bar {
+      position: sticky;
+      top: 16px;
+      z-index: 1000;
+      background: rgba(31, 32, 34, 0.95);
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: 8px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      backdrop-filter: blur(8px);
+    }
+
+    .action-desc {
+      font-size: 0.9rem;
+      color: #f1f5f9;
+    }
+
+    .action-btns {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn {
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background-color: var(--accent-nvgreen);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background-color: #24553f;
+    }
+
+    .btn-secondary {
+      background-color: #3b3d42;
+      color: #f8f6f0;
+    }
+
+    /* Magazine Masthead */
     .masthead {
       border-bottom: 2px solid var(--ink-primary);
       padding-bottom: 12px;
@@ -102,11 +156,11 @@
       letter-spacing: 0.5px;
     }
 
-    /* ---------------- HERO COVER SECTION ---------------- */
+    /* Hero Cover Section */
     .cover-article {
       background: var(--paper-white);
       border: 1px solid var(--border-soft);
-      border-radius: 4px; /* 잡지 제본 느낌의 얕은 곡률 */
+      border-radius: 4px;
       padding: 36px 32px;
       margin-bottom: 32px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
@@ -139,7 +193,7 @@
       margin-bottom: 24px;
     }
 
-    /* Price Bar in Cover */
+    /* Price Bar */
     .price-strip {
       display: flex;
       justify-content: space-between;
@@ -169,7 +223,7 @@
     .hero-change {
       font-size: 1.05rem;
       font-weight: 600;
-      color: var(--accent-sage);
+      color: var(--accent-rust);
     }
 
     .currency-badge {
@@ -179,7 +233,7 @@
       letter-spacing: 0.5px;
     }
 
-    /* ---------------- THREE PILLARS (1분 핵심 요약) ---------------- */
+    /* 3 Pillars */
     .editorial-grid-3 {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -218,7 +272,7 @@
       line-height: 1.55;
     }
 
-    /* ---------------- EDITORIAL DISCLAIMER BANNER ---------------- */
+    /* Notice Banner */
     .editorial-notice {
       background: #faf7f0;
       border: 1px dashed var(--border-accent);
@@ -230,7 +284,15 @@
       line-height: 1.55;
     }
 
-    /* ---------------- CARD & SECTION STYLING ---------------- */
+    /* Cards & Headers */
+    .article-card {
+      background: var(--paper-white);
+      border: 1px solid var(--border-soft);
+      border-radius: 4px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
     .section-header {
       display: flex;
       align-items: baseline;
@@ -265,21 +327,12 @@
       display: inline-block;
       letter-spacing: 0.3px;
     }
-    .badge-fact { background: #e3efe8; color: var(--accent-sage); }
+    .badge-fact { background: #e3efe8; color: var(--accent-nvgreen); }
     .badge-ai { background: #e6edf3; color: var(--accent-slate); }
     .badge-unverified { background: #fbf0db; color: var(--accent-ochre); }
     .badge-blocked { background: #fbeae8; color: var(--accent-rust); }
 
-    /* Article Card */
-    .article-card {
-      background: var(--paper-white);
-      border: 1px solid var(--border-soft);
-      border-radius: 4px;
-      padding: 24px;
-      margin-bottom: 24px;
-    }
-
-    /* 2 Column Layout */
+    /* Layouts */
     .layout-2col {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -287,7 +340,6 @@
       margin-bottom: 24px;
     }
 
-    /* Chart Container */
     .chart-box {
       position: relative;
       width: 100%;
@@ -295,7 +347,6 @@
       margin-top: 10px;
     }
 
-    /* Stats Grid (Magazine Minimal) */
     .stat-strip-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -320,7 +371,6 @@
       color: var(--ink-primary);
     }
 
-    /* Quote / Callout Style */
     .pull-quote {
       font-family: var(--font-serif);
       font-style: italic;
@@ -332,7 +382,7 @@
       line-height: 1.5;
     }
 
-    /* ---------------- NEWS ARTICLES (EDITORIAL FORMAT) ---------------- */
+    /* News Dispatch */
     .news-dispatch {
       border-bottom: 1px solid var(--border-soft);
       padding: 20px 0;
@@ -390,7 +440,7 @@
       border-radius: 0 3px 3px 0;
     }
 
-    /* Check List */
+    /* Editorial List */
     ul.editorial-list {
       list-style: none;
     }
@@ -410,7 +460,6 @@
       color: var(--ink-muted);
     }
 
-    /* Metadata Table */
     .editorial-table {
       width: 100%;
       font-size: 0.82rem;
@@ -430,7 +479,6 @@
       font-weight: 500;
     }
 
-    /* Footer */
     footer.colophon {
       border-top: 1px solid var(--border-soft);
       margin-top: 40px;
@@ -442,95 +490,7 @@
       font-size: 0.85rem;
     }
 
-    /* Responsive */
-    @media (max-width: 768px) {
-      body {
-        padding: 16px 10px;
-      }
-      .cover-article {
-        padding: 24px 18px;
-      }
-      .cover-headline {
-        font-size: 1.8rem;
-      }
-      .editorial-grid-3 {
-        grid-template-columns: 1fr;
-        gap: 16px;
-      }
-      .pillar-col:not(:last-child) {
-        border-right: none;
-        border-bottom: 1px solid var(--border-soft);
-        padding-bottom: 14px;
-      }
-      .layout-2col {
-        grid-template-columns: 1fr;
-      }
-      .stat-strip-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-      .chart-box {
-        height: 240px;
-      }
-    }
-  
-    /* ---------------- PRINT & PDF STYLES (인쇄 최적화) ---------------- */
-    .action-bar {
-      position: sticky;
-      top: 16px;
-      z-index: 1000;
-      background: rgba(31, 32, 34, 0.95);
-      color: #ffffff;
-      padding: 12px 20px;
-      border-radius: 8px;
-      margin-bottom: 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-      backdrop-filter: blur(8px);
-    }
-
-    .action-desc {
-      font-size: 0.9rem;
-      color: #f1f5f9;
-    }
-
-    .action-btns {
-      display: flex;
-      gap: 8px;
-    }
-
-    .btn {
-      font-family: var(--font-sans);
-      font-size: 0.85rem;
-      font-weight: 600;
-      padding: 8px 16px;
-      border-radius: 5px;
-      cursor: pointer;
-      border: none;
-      transition: all 0.2s ease;
-    }
-
-    .btn-primary {
-      background-color: var(--accent-sage);
-      color: #ffffff;
-    }
-
-    .btn-primary:hover {
-      background-color: #24553f;
-    }
-
-    .btn-secondary {
-      background-color: #3b3d42;
-      color: #f8f6f0;
-    }
-
-    .btn-secondary:hover {
-      background-color: #4a4d53;
-    }
-
+    /* Print Styles */
     @media print {
       @page {
         size: A4 portrait;
@@ -598,7 +558,6 @@
         font-size: 2rem !important;
       }
 
-      /* 링크 인쇄 시 URL 텍스트 강제 출력 방지하여 깔끔한 잡지 레이아웃 유지 */
       a {
         text-decoration: none !important;
         color: #000000 !important;
@@ -609,16 +568,45 @@
       }
     }
 
+    @media (max-width: 768px) {
+      body {
+        padding: 16px 10px;
+      }
+      .cover-article {
+        padding: 24px 18px;
+      }
+      .cover-headline {
+        font-size: 1.8rem;
+      }
+      .editorial-grid-3 {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      .pillar-col:not(:last-child) {
+        border-right: none;
+        border-bottom: 1px solid var(--border-soft);
+        padding-bottom: 14px;
+      }
+      .layout-2col {
+        grid-template-columns: 1fr;
+      }
+      .stat-strip-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .chart-box {
+        height: 240px;
+      }
+    }
   </style>
 </head>
 <body>
 
 <div class="editorial-wrapper">
 
-  <!-- Floating Action Bar for Print & PDF Export -->
+  <!-- Floating Action Bar -->
   <div class="no-print action-bar">
     <div class="action-desc">
-      📰 <strong>The TSLA Dispatch</strong> • 오프라인 & 인쇄 최적화 리포트
+      📰 <strong>The NVDA Dispatch</strong> • 엔비디아 오프라인 & 인쇄 최적화 리포트
     </div>
     <div class="action-btns">
       <button class="btn btn-secondary" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">맨 위로</button>
@@ -626,246 +614,244 @@
     </div>
   </div>
 
-
-  <!-- 1. Magazine Masthead -->
+  <!-- Masthead -->
   <header class="masthead">
-    <div class="masthead-title">The Automotive & Tech Dispatch • Vol. 11</div>
+    <div class="masthead-title">The Semiconductor & AI Dispatch • Vol. 11</div>
     <div class="masthead-meta">
-      NASDAQ: <strong>TSLA</strong> • 통화: <strong>USD ($)</strong> • 발행 기준일: <strong>2026.11.13</strong>
+      NASDAQ: <strong>NVDA</strong> • 통화: <strong>USD ($)</strong> • 기준일: <strong>2026.11.13 마감 종가</strong>
     </div>
   </header>
 
-  <!-- 2. Editorial Transparency & Disclaimer -->
+  <!-- Editorial Disclaimer Notice -->
   <div class="editorial-notice">
     <strong>[독자 안내문 및 시세 공지]</strong><br>
-    • <strong>AI 초안 & 에디토리얼 편집</strong>: 본 대시보드는 초보자도 쉽게 읽을 수 있도록 세련된 잡지 형태로 편집된 인공지능 분석 리포트입니다.<br>
-    • <strong>저장 자료 기준</strong>: 로컬 데이터 파일(<code>tsla_data.json</code>)에 저장된 최근 23영업일 종가 및 공개 뉴스를 토대로 작성되었습니다.<br>
-    • <strong>실시간 시세 아님</strong>: <strong>2026년 11월 13일 정규장 마감 종가</strong> 기준이며, 장중 실시간 시세가 아닙니다. 실제 매매 시 증권사 HTS/MTS를 확인하세요.<br>
+    • <strong>AI 초안 & 에디토리얼 편집</strong>: 초보자도 쉽게 읽을 수 있도록 세련된 잡지 형태로 편집된 엔비디아(NVDA) 인공지능 분석 리포트입니다.<br>
+    • <strong>저장 자료 기준</strong>: 로컬 데이터 파일(<code>nvda_data.json</code>)에 저장된 최근 23영업일 종가 및 공개 뉴스를 토대로 작성되었습니다.<br>
+    • <strong>실시간 시세 아님</strong>: <strong>2026년 11월 13일 정규장 마감 종가</strong> 기준이며 장중 실시간 시세가 아닙니다. 실제 매매 시 증권사 HTS/MTS를 확인하세요.<br>
     • <strong>인과관계 왜곡 금지</strong>: 개별 뉴스가 주가 등락의 유일한 원인인 것처럼 단정하지 않습니다.
   </div>
 
-  <!-- 3. Cover Article / Hero Section (핵심 먼저 보기) -->
+  <!-- Cover Story -->
   <article class="cover-article">
-    <span class="issue-label">Special Edition • 자율주행으로의 대전환</span>
-    <h1 class="cover-headline">테슬라, 제조사에서<br>‘AI·로보택시 기업’으로의 변곡점</h1>
+    <span class="issue-label">Special Edition • AI 반도체 제국의 변곡점</span>
+    <h1 class="cover-headline">엔비디아, 30년 리더십 교체와<br>차세대 AI 인프라의 미래</h1>
     <p class="cover-lead">
-      전기차 보급을 넘어 운전대 없는 ‘사이버캡(Cybercab)’과 자율주행 서비스로 체질을 바꾸고 있는 테슬라(TSLA)의 최근 1개월 흐름과 핵심 이슈를 한눈에 정리합니다.
+      전 세계 생성형 AI 반도체(GPU) 시장의 80% 이상을 장악한 엔비디아(NVDA)의 최근 1개월 주가 궤적과 창립자 사임, 그리고 11월 17일 실적 발표를 앞둔 핵심 쟁점을 짚어봅니다.
     </p>
 
-    <!-- Price Snapshot Bar -->
+    <!-- Price Strip -->
     <div class="price-strip">
       <div>
         <div class="currency-badge">최근 마감 종가 (2026.11.13)</div>
         <div class="price-item-wrap">
-          <span class="hero-number">$389.46</span>
-          <span class="hero-change">▲ 1개월 누적 +$22.30 (+6.07%)</span>
+          <span class="hero-number">$162.14</span>
+          <span class="hero-change">▼ 1개월 누적 -$59.16 (-26.73%)</span>
         </div>
       </div>
       <div style="font-size: 0.85rem; color: var(--ink-secondary);">
-        추정 시가총액: <strong>약 1조 2,500억 달러</strong> (원화 약 1,760조 원)
+        추정 시가총액: <strong>약 3조 9,800억 달러</strong> (원화 약 5,600조 원 이상)
       </div>
     </div>
 
-    <!-- 3 Pillars of 1-Minute Summary -->
+    <!-- 3 Pillars -->
     <div class="editorial-grid-3">
       <div class="pillar-col">
         <div class="pillar-num">01 / 본질</div>
         <div class="pillar-title">회사의 정체성</div>
         <div class="pillar-desc">
-          단순한 전기차 제조사를 넘어, 세계 최고 수준의 자율주행 AI 소프트웨어와 전용 무인차(Cybercab)를 만드는 테크 기업입니다.
+          인공지능(AI) 두뇌 역할을 하는 반도체(GPU)와 네트워크를 독점 공급하며 전 세계 AI 혁신을 이끄는 시가총액 약 4조 달러 기업입니다.
         </div>
       </div>
       <div class="pillar-col">
         <div class="pillar-num">02 / 시세</div>
-        <div class="pillar-title">1개월 주가 궤적</div>
+        <div class="pillar-title">1개월 주가 흐름</div>
         <div class="pillar-desc">
-          10월 $367대에서 출발하여 11월 초 $343선까지 일시 조정을 겪었으나, 로보택시 플릿 확대 기대감에 힘입어 $389.46으로 반등 마감했습니다.
+          10월 $220선에서 횡보하던 주가는 11월 들어 의회 규제 압박과 CEO 사임이라는 돌발 변수로 26.7% 하락한 $162.14로 마감했습니다.
         </div>
       </div>
       <div class="pillar-col">
         <div class="pillar-num">03 / 이슈</div>
         <div class="pillar-title">가장 큰 뉴스</div>
         <div class="pillar-desc">
-          사이버트럭 라인을 단계적으로 줄이고, 운전대 없는 2인승 '사이버캡' 대량 양산에 텍사스 기가팩토리 역량을 총집결하기로 결정했습니다.
+          창립자 젠슨 황이 CEO직을 내려놓고 콜렛 크레스 CFO가 임시 CEO를 맡았으며, 11월 17일 중대 실적 발표를 앞두고 있습니다.
         </div>
       </div>
     </div>
   </article>
 
-  <!-- 4. Stock Chart (23 Trading Days) -->
+  <!-- Stock Chart -->
   <section class="article-card">
     <div class="section-header">
-      <div class="section-title">최근 1개월 일별 종가 차트</div>
+      <div class="section-title">엔비디아 최근 1개월 일별 종가 차트</div>
       <div class="section-badge"><span class="badge badge-fact">사실 (수집 종가)</span> 2026.10.14 — 2026.11.13</div>
     </div>
     
     <div class="chart-box">
-      <canvas id="tslaChart"></canvas>
+      <canvas id="nvdaChart"></canvas>
     </div>
 
-    <!-- Minimal Stat Strip -->
     <div class="stat-strip-grid">
       <div class="stat-strip-item">
         <div class="s-label">시작 종가 (10/14)</div>
-        <div class="s-value">$367.16</div>
+        <div class="s-value">$221.30</div>
       </div>
       <div class="stat-strip-item">
         <div class="s-label">최근 마감가 (11/13)</div>
-        <div class="s-value" style="color: var(--accent-sage);">$389.46</div>
+        <div class="s-value" style="color: var(--accent-rust);">$162.14</div>
       </div>
       <div class="stat-strip-item">
-        <div class="s-label">기간 최고가 (10/27)</div>
-        <div class="s-value">$407.46</div>
+        <div class="s-label">기간 최고가 (10/21)</div>
+        <div class="s-value">$221.97</div>
       </div>
       <div class="stat-strip-item">
-        <div class="s-label">기간 최저가 (11/05)</div>
-        <div class="s-value">$343.69</div>
+        <div class="s-label">기간 최저가 (11/13)</div>
+        <div class="s-value">$162.14</div>
       </div>
     </div>
     
     <div style="font-size: 0.78rem; color: var(--ink-muted); margin-top: 14px;">
-      * 출처: TwelveData / Morningstar 일별 공식 마감 종가 기준 (총 23영업일) • 주말 및 미국 장 휴장일 제외
+      * 출처: Investing.com / StockAnalysis 공개 최근 일별 마감 데이터 (총 23영업일) • 주말 및 미국 장 휴장일 제외
     </div>
   </section>
 
-  <!-- 5. Two Columns: Company Overview & Stock Concepts -->
+  <!-- Two Columns: Overview & Terms -->
   <div class="layout-2col">
     <!-- Company Overview -->
     <div class="article-card">
       <div class="section-header">
-        <div class="section-title">테슬라는 어떻게 돈을 버나요?</div>
+        <div class="section-title">엔비디아는 어떻게 돈을 버나요?</div>
         <span class="badge badge-fact">사실</span>
       </div>
       <p style="font-size: 0.9rem; color: var(--ink-secondary); margin-bottom: 12px;">
-        테슬라는 전 세계에서 가장 많이 팔리는 전기차(Model Y, Model 3)와 에너지 저장장치(Megapack)를 판매하며, 나아가 자율주행(FSD) 소프트웨어 구독과 무인 로보택시 호출 플랫폼 서비스로 사업 영역을 확장하고 있습니다.
+        엔비디아는 ChatGPT 같은 대규모 AI 모델을 만들고 가동하는 데 필수적인 <strong>고성능 GPU(Hopper, Blackwell)</strong>와 이 칩들을 수만 개씩 연결하는 초고속 네트워킹 장비를 빅테크 기업들에 판매합니다.
       </p>
       <div class="pull-quote">
-        “자동차가 스스로 달리는 시점이 오면, 차는 소유물이 아니라 승객을 태워 돈을 버는 이동 자산이 된다.”
+        “AI가 달리는 초고속 열차라면, 엔비디아는 열차가 달릴 수 있는 엔진과 선로를 독점 공급하는 회사다.”
       </div>
     </div>
 
-    <!-- Easy Terminology for Beginners -->
+    <!-- Easy Terminology -->
     <div class="article-card">
       <div class="section-header">
         <div class="section-title">초보자를 위한 에디터 용어 노트</div>
         <span class="badge badge-fact">사실</span>
       </div>
       <ul class="editorial-list">
-        <li><strong>사이버캡 (Cybercab)</strong>: 운전대(핸들)와 페달이 전혀 없는 테슬라 전용 2인승 무인 로보택시입니다.</li>
-        <li><strong>FSD (Full Self-Driving)</strong>: 카메라와 AI 신경망을 통해 스스로 도로를 주행하는 테슬라의 자율주행 프로그램입니다.</li>
-        <li><strong>기가팩토리 (Gigafactory)</strong>: 테슬라가 배터리와 완성차를 초고속으로 대량 생산하는 초대형 공장입니다.</li>
-        <li><strong>NHTSA</strong>: 미국 도로교통안전국으로, 자동차 안전 규격과 리콜을 감독하는 미국 정부 기관입니다.</li>
+        <li><strong>GPU (그래픽 처리장치)</strong>: 수만 개의 연산을 동시에 처리하여 AI 학습에 쓰이는 핵심 반도체입니다.</li>
+        <li><strong>티커(Ticker: NVDA)</strong>: 증권사 앱에서 종목을 검색할 때 입력하는 고유 영문 코드입니다.</li>
+        <li><strong>임시 CEO</strong>: 최고경영자의 갑작스러운 공백 시 정식 대표 선임 전까지 회사를 이끄는 비상 대표입니다.</li>
+        <li><strong>시가총액</strong>: 회사 전체의 시장 가치로, 현재 약 3조 9,800억 달러(한화 약 5,600조 원) 규모입니다.</li>
       </ul>
     </div>
   </div>
 
-  <!-- 6. Editorial News Dispatch (최신 뉴스 5선) -->
+  <!-- News Dispatch (5 News) -->
   <section class="article-card">
     <div class="section-header">
-      <div class="section-title">주가와 비전에 영향을 미친 최근 뉴스 5선</div>
+      <div class="section-title">주가에 결정적 영향을 미친 최근 핵심 뉴스 5선</div>
       <span class="badge badge-fact">원문 링크 및 본문 검증</span>
     </div>
 
     <div style="background: var(--paper-surface); padding: 12px 16px; border-radius: 4px; font-size: 0.82rem; color: var(--ink-secondary); margin-bottom: 20px;">
-      ℹ️ <strong>에디터 노트:</strong> 주가는 기업의 뉴스뿐 아니라 거시경제 금리, 배터리 공급망, 나스닥 전반의 수급이 얽혀 움직입니다. 따라서 특정 뉴스를 주가 상승·하락의 유일한 원인으로 단정하지 않으며, 본문을 직접 검증한 기사와 유료 장벽 기사를 분리하여 표시했습니다.
+      ℹ️ <strong>에디터 노트:</strong> 주가는 뉴스뿐 아니라 거시경제 금리, 실적 전망, 기관 수급이 복합 작용하여 결정됩니다. 특정 뉴스를 주가 등락의 유일한 원인으로 단정하지 않으며, 본문을 직접 검증한 기사와 유료 장벽 기사를 분리하여 표시했습니다.
     </div>
 
-    <!-- Dispatch 1: Q3 Earnings & AI R&D -->
+    <!-- News 1: Resignation -->
     <div class="news-dispatch">
       <div class="dispatch-header">
-        <span>2026.10.21</span>
+        <span>2026.11.12</span>
         <span>•</span>
-        <span>매체: <strong>Tesla Investor Relations (공식 10-Q)</strong></span>
+        <span>매체: <strong>미국 SEC Form 8-K 공식 공시</strong></span>
         <span>•</span>
         <span class="badge badge-fact">공식 본문 확인 완료</span>
       </div>
       <h3 class="dispatch-title">
-        <a href="https://ir.tesla.com/" target="_blank" rel="noopener noreferrer">
-          1. 3분기 실적 발표: AI·로보택시 R&D 투자 27.6억 달러로 급증 ↗
+        <a href="https://www.sec.gov/edgar/browse/?CIK=0001045810" target="_blank" rel="noopener noreferrer">
+          1. 젠슨 황 CEO 사임 수락… 콜렛 크레스 CFO 임시 CEO 선임 ↗
         </a>
       </h3>
       <p class="dispatch-body">
-        <strong>[본문 요약]</strong> 테슬라의 3분기 총매출은 280.5억 달러를 기록했습니다. 단기 순이익은 다소 줄었으나, AI 및 자율주행 연구개발(R&D) 지출을 전년 대비 69% 늘어난 27.6억 달러로 확대하며 ‘운송 서비스 및 AI 기업’으로의 공식 전환을 선언했습니다.
+        <strong>[본문 요약]</strong> 엔비디아 이사회는 30년 넘게 회사를 이끌어온 창립자 젠슨 황의 대표이사 사임을 공식 수락했습니다. CFO인 콜렛 크레스를 임시 CEO로 임명하고, 하비 C. 존스 사외이사를 이사회 의장으로 선출하여 경영을 총괄하도록 했습니다.
       </p>
       <div class="dispatch-note">
-        <strong>【사실】</strong> 3분기 재무제표 수치와 AI R&D 지출액은 SEC 공식 공시 팩트입니다.<br>
-        <strong>【AI 해석 & 유의점】</strong> 단기 마진 축소 우려에도 불구하고, 차세대 AI 소프트웨어 가치에 대한 기대감이 형성되며 주가는 $370~$380선 지지대를 형성했습니다.
+        <strong>【사실】</strong> CEO 사임과 임시 CEO 선임은 미국 공식 공시 문서로 확인된 확실한 사실입니다.<br>
+        <strong>【AI 해석 & 유의점】</strong> 창립자의 전격 사임이 11월 12~13일 주가 급락의 큰 심리적 충격 요인이 되었으나, 실적 발표를 앞둔 기관들의 위험 회피 매물이 겹쳐 하락 폭을 키웠습니다.
       </div>
     </div>
 
-    <!-- Dispatch 2: Cybertruck wind down to Cybercab -->
-    <div class="news-dispatch">
-      <div class="dispatch-header">
-        <span>2026.11.04</span>
-        <span>•</span>
-        <span>매체: <strong>Morningstar / 24/7 Wall St</strong></span>
-        <span>•</span>
-        <span class="badge badge-fact">본문 확인 완료</span>
-      </div>
-      <h3 class="dispatch-title">
-        <a href="https://www.morningstar.com/" target="_blank" rel="noopener noreferrer">
-          2. 기가팩토리 대전환: 사이버트럭 축소, ‘사이버캡’ 대량 양산에 집중 ↗
-        </a>
-      </h3>
-      <p class="dispatch-body">
-        <strong>[본문 요약]</strong> 일론 머스크는 텍사스 기가팩토리의 사이버트럭 생산 라인을 단계적으로 축소하고, 그 공간을 운전대 없는 2인승 무인차 '사이버캡(Cybercab)' 대량 생산 라인으로 재편한다고 밝혔습니다.
-      </p>
-      <div class="dispatch-note">
-        <strong>【사실】</strong> 공장 설비 라인 재편 및 사이버트럭 신규 주문 일시 중단은 발표된 사실입니다.<br>
-        <strong>【AI 해석 & 유의점】</strong> 라인 교체기 단기 생산 공백 우려로 11월 초 주가가 $343선까지 일시 조정을 받았으나, 사이버캡 조기 양산 기대가 반등을 이끌었습니다.
-      </div>
-    </div>
-
-    <!-- Dispatch 3: 1300 Robotaxis in Texas -->
+    <!-- News 2: Congressional Scrutiny -->
     <div class="news-dispatch">
       <div class="dispatch-header">
         <span>2026.11.10</span>
         <span>•</span>
-        <span>매체: <strong>Teslarati / 텍사스 DMV 행정 기록</strong></span>
-        <span>•</span>
-        <span class="badge badge-fact">공식 본문 확인 완료</span>
-      </div>
-      <h3 class="dispatch-title">
-        <a href="https://www.teslarati.com/" target="_blank" rel="noopener noreferrer">
-          3. 텍사스 로보택시 인가 대수 1,300대 돌파… 일일 21시간 운행 체제 가동 ↗
-        </a>
-      </h3>
-      <p class="dispatch-body">
-        <strong>[본문 요약]</strong> 텍사스주 차량관리국(DMV) 등록 자료에 따르면 테슬라 로보택시의 정식 인가 운행 차량이 1,300대를 넘어섰습니다. 오스틴에 이어 댈러스, 샌안토니오까지 서비스 영역을 넓히며 실제 상용 서비스 시간을 일일 21시간으로 연장했습니다.
-      </p>
-      <div class="dispatch-note">
-        <strong>【사실】</strong> 텍사스주 DMV 공식 차량 인가 데이터로 확인된 팩트입니다.<br>
-        <strong>【AI 해석 & 유의점】</strong> 무인 호출 서비스의 실제 탑승 횟수 증가가 플랫폼 수수료 기대감으로 이어지며 11월 중순 $390선 회복에 긍정적 심리로 작용했습니다.
-      </div>
-    </div>
-
-    <!-- Dispatch 4: NHTSA Audit Query -->
-    <div class="news-dispatch">
-      <div class="dispatch-header">
-        <span>2026.10.28</span>
-        <span>•</span>
-        <span>매체: <strong>Reuters / 미국 자동차 전문지</strong></span>
+        <span>매체: <strong>Reuters / The New York Times</strong></span>
         <span>•</span>
         <span class="badge badge-fact">본문 확인 완료</span>
       </div>
       <h3 class="dispatch-title">
-        <a href="https://www.reuters.com/business/autos-transportation/" target="_blank" rel="noopener noreferrer">
-          4. 미 도로교통안전국(NHTSA), 사이버캡 '운전대 없는 구조' 안전 감사 개시 ↗
+        <a href="https://www.reuters.com/technology/" target="_blank" rel="noopener noreferrer">
+          2. 미 의회, AI 반도체 국가 안보 규제 강화 및 대중국 수출 통제 청문회 압박 ↗
         </a>
       </h3>
       <p class="dispatch-body">
-        <strong>[본문 요약]</strong> 연방 안전 규제 기관인 NHTSA가 운전대와 페달, 사이드미러가 아예 없는 사이버캡의 연방 자동차 안전 기준(FMVSS) 자체 인증 절차에 대해 질의 감사(AQ26002)를 시작했습니다.
+        <strong>[본문 요약]</strong> 미국 하원 위원회가 최첨단 AI 칩의 우회 유출 방지 및 정보 보안 규정 준수 여부를 강도 높게 조사하며 경영진에 대한 청문회 소환 가능성을 경고했습니다.
       </p>
       <div class="dispatch-note">
-        <strong>【사실】</strong> 정부 공식 문서로 감사 쿼리가 시작되었음이 확인되었습니다.<br>
-        <strong>【AI 해석 & 유의점】</strong> 자율주행 차량 승인에 대한 규제 문턱이 단기 리스크로 인식될 수 있으나, 과거 규제 이슈와 마찬가지로 장기 기술 경쟁력과 시장 수급이 주가를 지탱했습니다.
+        <strong>【사실】</strong> 의회 차원의 수출 통제 강화 청문회 추진은 공식 확인된 사실입니다.<br>
+        <strong>【AI 해석 & 유의점】</strong> 지정학적 규제 부담이 기술주 전반에 긴장감을 조성했으나, 특정 하루의 주가 변동과 1대 1로 완전히 일치하지는 않습니다.
       </div>
     </div>
 
-    <!-- Dispatch 5: Paywalled WSJ In-depth -->
+    <!-- News 3: External CEO Search -->
+    <div class="news-dispatch">
+      <div class="dispatch-header">
+        <span>2026.11.13</span>
+        <span>•</span>
+        <span>매체: <strong>Forbes / 주요 경제 언론</strong></span>
+        <span>•</span>
+        <span class="badge badge-fact">본문 확인 완료</span>
+      </div>
+      <h3 class="dispatch-title">
+        <a href="https://www.forbes.com/" target="_blank" rel="noopener noreferrer">
+          3. 엔비디아 이사회, 차기 정식 CEO 영입을 위한 승계 위원회 가동 ↗
+        </a>
+      </h3>
+      <p class="dispatch-body">
+        <strong>[본문 요약]</strong> 비상 경영 체제에 돌입한 이사회가 경영 안정을 위해 글로벌 반도체 및 테크 업계(Arm 최고경영자 등)의 유력 외부 리더들을 대상으로 차기 정식 CEO 후보군 접촉에 착수했습니다.
+      </p>
+      <div class="dispatch-note">
+        <strong>【사실】</strong> 이사회가 정식 CEO 선임을 위한 특별위원회를 가동했다는 점은 공식 확인되었습니다.<br>
+        <strong>【AI 해석 & 유의점】</strong> 새로운 리더십 구축이 장기 불확실성을 낮출 수 있을지 시장이 주목하고 있으나, 단기적 하락세를 즉시 반전시키지는 못했습니다.
+      </div>
+    </div>
+
+    <!-- News 4: Q3 Earnings Call Schedule -->
+    <div class="news-dispatch">
+      <div class="dispatch-header">
+        <span>2026.10.30</span>
+        <span>•</span>
+        <span>매체: <strong>NVIDIA IR 공식 발표</strong></span>
+        <span>•</span>
+        <span class="badge badge-fact">공식 본문 확인 완료</span>
+      </div>
+      <h3 class="dispatch-title">
+        <a href="https://investor.nvidia.com/" target="_blank" rel="noopener noreferrer">
+          4. 엔비디아, 11월 17일 3분기 결산 실적 발표 컨퍼런스 콜 예고 ↗
+        </a>
+      </h3>
+      <p class="dispatch-body">
+        <strong>[본문 요약]</strong> 엔비디아가 11월 17일 장 마감 후 최근 3개월간의 재무 실적을 공개한다고 발표했습니다. 임시 CEO 선임 이후 첫 공식 재무 발표로 데이터센터 매출과 차기 가이던스에 시장의 이목이 집중되어 있습니다.
+      </p>
+      <div class="dispatch-note">
+        <strong>【사실】</strong> 실적 발표 일정은 회사 공식 공시 팩트입니다.<br>
+        <strong>【AI 해석 & 유의점】</strong> 옵션 시장의 예상 변동성이 9% 이상 치솟는 등 실적 발표를 앞둔 극도의 경계 심리가 시장의 관망세를 짙게 만들었습니다.
+      </div>
+    </div>
+
+    <!-- News 5: Paywalled WSJ In-depth -->
     <div class="news-dispatch" style="opacity: 0.9;">
       <div class="dispatch-header">
-        <span>2026.11.11</span>
+        <span>2026.11.12</span>
         <span>•</span>
         <span>매체: <strong>The Wall Street Journal</strong></span>
         <span>•</span>
@@ -874,50 +860,48 @@
       </div>
       <h3 class="dispatch-title">
         <a href="https://www.wsj.com/" target="_blank" rel="noopener noreferrer">
-          5. 테슬라 로보택시의 1마일당 원가와 수익성 구조 심층 분석 ↗
+          5. 엔비디아 이사회 내부 감사 보고서 및 거버넌스 조사 심층 분석 ↗
         </a>
       </h3>
       <p class="dispatch-body" style="color: var(--accent-ochre);">
-        <strong>[본문 접근 불가 안내]</strong> WSJ 유료 구독 결제벽으로 인해 <strong>본문 기사 전문의 내부 원가 모델링 수치를 직접 읽고 검증하지 못했습니다.</strong> 헤드라인을 통해 우버나 웨이모 대비 마일당 비용 절감 잠재력을 분석한 기사라는 점만 확인했습니다.
+        <strong>[본문 접근 불가 안내]</strong> WSJ 유료 구독 결제벽으로 인해 <strong>본문 기사 전문의 내부 감사 세부 내용을 직접 읽고 검증하지 못했습니다.</strong> 헤드라인을 통해 이사회 차원의 내부 조사 보고서가 사임의 직접적 계기가 되었다는 점만 확인했습니다.
       </p>
       <div class="dispatch-note">
-        <strong>【확인 필요 / 미검증】</strong> 직접 확인하지 못한 비공개 추정치는 임의로 숫자를 지어내지 않고 '확인 필요' 상태로 남겨둡니다.
+        <strong>【확인 필요 / 미검증】</strong> 직접 확인하지 못한 비공개 감사 보고서 내용은 인위적으로 지어내지 않고 '확인 필요' 상태로 남겨둡니다.
       </div>
     </div>
 
   </section>
 
-  <!-- 7. Two Columns: What to Check Next & Unverified items -->
+  <!-- What to check next -->
   <div class="layout-2col">
-    <!-- Actionable Checklist -->
     <div class="article-card">
       <div class="section-header">
         <div class="section-title">더 확인해야 할 4가지 포인트</div>
         <span class="badge badge-ai">AI 추천 점검</span>
       </div>
       <ul class="editorial-list">
-        <li><strong>사이버캡(Cybercab) 규제 승인</strong>: 운전대 없는 차량의 미국 전역 주행 승인 법안 통과 여부를 체크하세요.</li>
-        <li><strong>로보택시(Robotaxi) 유료 탑승 데이터</strong>: 텍사스 외 캘리포니아, 네바다 등 타 주 확장 일정을 주시하세요.</li>
-        <li><strong>기존 차량 인도량(Delivery) 추이</strong>: 핵심 수입원인 Model Y/3의 글로벌 판매량이 유지되는지 확인하세요.</li>
-        <li><strong>차세대 저가형 전기차 출시</strong>: 2만 달러대 보급형 모델의 출시 일정과 양산 일정을 점검하세요.</li>
+        <li><strong>11월 17일 분기 실적 발표</strong>: 임시 CEO 체제에서 발표되는 실제 GPU 공급 실적과 차기 가이던스를 확인하세요. <a href="https://investor.nvidia.com" target="_blank" rel="noopener noreferrer" style="color:var(--accent-nvgreen); font-size:0.8rem;">[공식 실적 페이지]</a></li>
+        <li><strong>새로운 정식 대표(CEO) 선임</strong>: 회사를 이끌 차기 수장이 누가 될지 이사회 공식 발표를 주시하세요.</li>
+        <li><strong>빅테크 고객들의 AI 설비투자(CAPEX)</strong>: 마이크로소프트, 구글 등이 엔비디아 칩 주문을 유지하는지 확인하세요.</li>
+        <li><strong>미국 정부의 반도체 수출 규제</strong>: 첨단 칩 보안 및 통제 법안의 실제 시행 범위를 체크하세요.</li>
       </ul>
     </div>
 
-    <!-- Unverified / Cautionary Notes -->
     <div class="article-card">
       <div class="section-header">
         <div class="section-title">미확인 및 확인 필요 사항</div>
         <span class="badge badge-unverified">확인 필요</span>
       </div>
       <ul class="editorial-list">
-        <li><strong>오늘의 실시간 주가</strong>: 본 리포트는 2026년 11월 13일 마감 종가($389.46) 기준이므로 오늘의 장중 시세는 증권사 앱에서 확인해야 합니다.</li>
-        <li><strong>기관별 목표주가 편차</strong>: 월가 기관별로 $200대부터 $500대까지 시각 차가 매우 크므로 단일 목표가만 믿지 않도록 주의하세요.</li>
-        <li><strong>환율에 따른 실현 손익</strong>: 미국 주식이므로 달러 환율 변동이 실제 원화 수익률에 큰 영향을 미칩니다.</li>
+        <li><strong>오늘의 실시간 주가</strong>: 본 리포트는 2026년 11월 13일 마감 종가($162.14) 기준이므로 오늘 현재가는 증권사 앱에서 확인해야 합니다.</li>
+        <li><strong>차기 CEO 내정 소문</strong>: 언론에 오르내리는 내정설은 이사회 공식 의결 전까지 미확인 추측성 보도입니다.</li>
+        <li><strong>환율에 따른 실현 손익</strong>: 미국 주식이므로 원/달러 환율 변동이 실제 원화 수익률에 큰 영향을 미칩니다.</li>
       </ul>
     </div>
   </div>
 
-  <!-- 8. Metadata Transparency Table -->
+  <!-- Metadata Table -->
   <section class="article-card">
     <div class="section-header">
       <div class="section-title">에디토리얼 데이터 출처 및 작성 정보</div>
@@ -927,7 +911,7 @@
       <tbody>
         <tr>
           <th>회사명 / 종목코드</th>
-          <td>Tesla, Inc. / NASDAQ: TSLA</td>
+          <td>NVIDIA Corporation / NASDAQ: NVDA</td>
         </tr>
         <tr>
           <th>자료 기준일</th>
@@ -935,15 +919,15 @@
         </tr>
         <tr>
           <th>시세 출처</th>
-          <td>TwelveData / Morningstar 일별 공식 마감 데이터</td>
+          <td>Investing.com / StockAnalysis 공개 최근 일별 마감 데이터</td>
         </tr>
         <tr>
           <th>뉴스 출처</th>
-          <td>테슬라 IR 공식 10-Q 공시, 텍사스 DMV 기록, Reuters, Teslarati, WSJ(유료 표기)</td>
+          <td>미국 SEC Form 8-K 공시, 엔비디아 IR, Reuters, Forbes, WSJ(유료 표기)</td>
         </tr>
         <tr>
           <th>로컬 저장 파일</th>
-          <td><code>tsla_data.json</code> (시세 및 뉴스 메타데이터 일체 저장 완료)</td>
+          <td><code>nvda_data.json</code> (시세 및 뉴스 메타데이터 일체 저장 완료)</td>
         </tr>
         <tr>
           <th>정보 구분 표기</th>
@@ -958,66 +942,66 @@
     </table>
   </section>
 
-  <!-- 9. Magazine Colophon Footer -->
+  <!-- Colophon -->
   <footer class="colophon">
-    The TSLA Dispatch • Curated for Beginners • Editorial Style • Not Real-time Financial Advice
+    The NVDA Dispatch • Curated for Beginners • Editorial Style • Not Real-time Financial Advice
   </footer>
 
 </div>
 
 <!-- Interactive Chart Script -->
 <script>
-  // 1. Data loaded from saved tsla_data.json (2026-10-14 ~ 2026-11-13)
+  // 1. Data loaded from saved nvda_data.json (2026-10-14 ~ 2026-11-13)
   const chartData = [
-    { date: "10/14", close: 367.16 },
-    { date: "10/15", close: 362.44 },
-    { date: "10/16", close: 354.72 },
-    { date: "10/19", close: 368.06 },
-    { date: "10/20", close: 373.71 },
-    { date: "10/21", close: 386.47 },
-    { date: "10/22", close: 374.58 },
-    { date: "10/23", close: 372.22 },
-    { date: "10/26", close: 391.62 },
-    { date: "10/27", close: 407.46 },
-    { date: "10/28", close: 404.22 },
-    { date: "10/29", close: 403.30 },
-    { date: "10/30", close: 399.81 },
-    { date: "11/02", close: 403.82 },
-    { date: "11/03", close: 398.50 },
-    { date: "11/04", close: 385.19 },
-    { date: "11/05", close: 343.69 },
-    { date: "11/06", close: 358.22 },
-    { date: "11/09", close: 378.05 },
-    { date: "11/10", close: 379.78 },
-    { date: "11/11", close: 390.84 },
-    { date: "11/12", close: 397.45 },
-    { date: "11/13", close: 389.46 }
+    { date: "10/14", close: 221.30 },
+    { date: "10/15", close: 217.23 },
+    { date: "10/16", close: 214.13 },
+    { date: "10/19", close: 217.09 },
+    { date: "10/20", close: 216.47 },
+    { date: "10/21", close: 221.97 },
+    { date: "10/22", close: 212.21 },
+    { date: "10/23", close: 210.96 },
+    { date: "10/26", close: 216.00 },
+    { date: "10/27", close: 217.94 },
+    { date: "10/28", close: 215.38 },
+    { date: "10/29", close: 213.66 },
+    { date: "10/30", close: 204.64 },
+    { date: "11/02", close: 202.06 },
+    { date: "11/03", close: 206.69 },
+    { date: "11/04", close: 200.13 },
+    { date: "11/05", close: 181.60 },
+    { date: "11/06", close: 186.64 },
+    { date: "11/09", close: 178.67 },
+    { date: "11/10", close: 168.89 },
+    { date: "11/11", close: 173.73 },
+    { date: "11/12", close: 166.19 },
+    { date: "11/13", close: 162.14 }
   ];
 
   const labels = chartData.map(d => d.date);
   const prices = chartData.map(d => d.close);
 
-  // 2. Render Chart.js (Magazine Editorial Tone: Warm Charcoal Line & Subtle Cream Wash)
-  const ctx = document.getElementById('tslaChart').getContext('2d');
+  // Render Chart.js
+  const ctx = document.getElementById('nvdaChart').getContext('2d');
   
   const gradient = ctx.createLinearGradient(0, 0, 0, 280);
-  gradient.addColorStop(0, 'rgba(45, 106, 79, 0.18)');   /* Sage Green soft tint */
+  gradient.addColorStop(0, 'rgba(178, 65, 48, 0.18)');   /* Terracotta soft tint for decline */
   gradient.addColorStop(1, 'rgba(248, 246, 240, 0.0)');
 
-  window.tslaChartInstance = new Chart(ctx, {
+  window.nvdaChartInstance = new Chart(ctx, {
     type: 'line',
     data: {
       labels: labels,
       datasets: [{
-        label: '마감 종가 (USD $)',
+        label: '종가 (USD $)',
         data: prices,
-        borderColor: '#2d6a4f',         /* Deep Sage Green */
+        borderColor: '#b24130',         /* Terracotta Rust Line */
         backgroundColor: gradient,
         borderWidth: 2,
         fill: true,
         tension: 0.2,
         pointBackgroundColor: '#ffffff',
-        pointBorderColor: '#2d6a4f',
+        pointBorderColor: '#b24130',
         pointBorderWidth: 2,
         pointRadius: 3,
         pointHoverRadius: 6
@@ -1044,7 +1028,7 @@
         tooltip: {
           backgroundColor: '#1f2022',
           titleColor: '#ffffff',
-          bodyColor: '#e3efe8',
+          bodyColor: '#fbeae8',
           borderColor: '#cfc8b8',
           borderWidth: 1,
           padding: 10,
@@ -1068,8 +1052,8 @@
           }
         },
         y: {
-          min: 330,
-          max: 420,
+          min: 150,
+          max: 235,
           grid: {
             color: '#ede8dd'
           },
@@ -1084,13 +1068,10 @@
       }
     }
   });
-</script>
 
-
-<script>
   function handlePrint() {
-    if (window.tslaChartInstance) {
-      window.tslaChartInstance.resize();
+    if (window.nvdaChartInstance) {
+      window.nvdaChartInstance.resize();
     }
     setTimeout(function() {
       window.print();
